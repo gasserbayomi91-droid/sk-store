@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الأدمن الشاملة - SK STORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: #030712; color: #f8fafc; min-height: 100vh; }
+        .hidden { display: none !important; }
+
+        .login-overlay { position: fixed; inset: 0; background: #030712; display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+        .login-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 24px; padding: 35px; width: 100%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+        .login-icon { width: 56px; height: 56px; background: #4f46e5; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 15px; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
+        .login-card h2 { text-align: center; font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+        .login-card p { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #cbd5e1; }
+        .form-input { width: 100%; background: #020617; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 14px; color: #f8fafc; font-size: 14px; }
+        .form-input:focus { outline: none; border-color: #6366f1; }
+        .btn-primary { background: linear-gradient(135deg, #4f46e5, #06b6d4); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-indigo { background: #4f46e5; color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .btn-danger { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.3); padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer; }
+        .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer; text-decoration: none; }
+        .btn-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); padding: 8px 14px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+        header { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 16px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
+        header h1 { font-size: 18px; font-weight: 900; color: #818cf8; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+
+        .container { max-width: 1250px; margin: 0 auto; padding: 24px; }
+        .tabs { display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #1e293b; padding-bottom: 16px; margin-bottom: 24px; }
+        .tab-btn { background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 10px 18px; border-radius: 12px; font-weight: bold; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: #4f46e5; color: white; border-color: #6366f1; }
+
+        .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+        .section-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .section-header h3 { font-size: 20px; font-weight: 900; color: #818cf8; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; }
+        th { color: #94a3b8; border-bottom: 1px solid #1e293b; padding: 12px 10px; }
+        td { padding: 14px 10px; border-bottom: 1px solid rgba(30, 41, 59, 0.6); vertical-align: middle; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+        .service-row { background: #020617; border: 1px solid #1e293b; border-radius: 12px; padding: 14px 16px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; }
+        .chat-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        .chat-box { background: #020617; border: 1px solid #1e293b; height: 340px; border-radius: 14px; padding: 15px; overflow-y: auto; margin-bottom: 12px; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: #0f172a; border: 1px solid #1e293b; border-radius: 22px; padding: 26px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+
+        @media(max-width: 768px) {
+            .chat-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="login-overlay">
+        <div class="login-card">
+            <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h2>دخول الإدارة المحمي</h2>
+            <p>أدخل اسم المستخدم وكلمة المرور للمتابعة</p>
+            <form onsubmit="adminLogin(event)">
+                <div class="form-group">
+                    <label>اسم المستخدم</label>
+                    <input type="text" id="admin-user" required placeholder="admin" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="admin-pass" required placeholder="••••••••" class="form-input">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">تسجيل الدخول الآمن</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <header>
+            <h1>👑 SK STORE - لوحة التحكم الشاملة</h1>
+            <div class="header-actions">
+                <a href="index.html" target="_blank" class="btn-secondary">معاينة المتجر 🌐</a>
+                <button onclick="logoutAdmin()" class="btn-danger">تسجيل الخروج</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="tabs">
+                <button onclick="switchTab('orders')" id="tab-btn-orders" class="tab-btn active">📦 إدارة الطلبات</button>
+                <button onclick="switchTab('categories')" id="tab-btn-categories" class="tab-btn">🗂️ الأقسام الرئيسية</button>
+                <button onclick="switchTab('platforms')" id="tab-btn-platforms" class="tab-btn">🎮 المنصات والخدمات</button>
+                <button onclick="switchTab('smm')" id="tab-btn-smm" class="tab-btn">🔌 سحب خدمات API</button>
+                <button onclick="switchTab('settings')" id="tab-btn-settings" class="tab-btn">⚙️ إعدادات الموقع</button>
+                <button onclick="switchTab('chats')" id="tab-btn-chats" class="tab-btn">💬 الدعم الفني</button>
+            </div>
+
+            <div id="tab-orders" class="card">
+                <div class="section-header">
+                    <h3>طلبات العملاء وإثباتات الدفع</h3>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>العميل ورقم التحويل</th>
+                                <th>الخدمة / الهدف</th>
+                                <th>الكمية والمبلغ</th>
+                                <th>الإيصال</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-categories" class="hidden">
+                <div class="section-header">
+                    <div>
+                        <h3>إدارة الأقسام الرئيسية في المتجر</h3>
+                        <p style="color: #94a3b8; font-size: 13px;">أضف قسم ثالث أو رابع (مثل: اشتراكات رقمية) واربط منصات به.</p>
+                    </div>
+                    <button onclick="addNewCategory()" class="btn-indigo">+ إضافة قسم جديد</button>
+                </div>
+                <div id="admin-categories-list" class="grid-3"></div>
+            </div>
+
+            <div id="tab-platforms" class="hidden">
+                <div class="section-header">
+                    <h3>إدارة المنصات والخدمات والأسعار والوصف</h3>
+                    <button onclick="openAddPlatformModal()" class="btn-indigo">+ إضافة منصة أو لعبة</button>
+                </div>
+                <div id="admin-platforms-list"></div>
+            </div>
+
+            <div id="tab-smm" class="hidden">
+                <div class="card">
+                    <h3 style="color: #22d3ee; margin-bottom: 10px;">🔌 سحب الخدمات تلقائياً من مزود API (SMM Sharks وغيرها)</h3>
+                    <p style="color: #94a3b8; font-size: 13px; margin-bottom: 16px;">أدخل رابط الـ API ومفتاح API Key لجلب جميع الخدمات وتعديل أسعارها.</p>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>رابط الـ API</label>
+                            <input type="text" id="smm-api-url" placeholder="https://smmsharks.com/api/v2" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>مفتاح API Key</label>
+                            <input type="password" id="smm-api-key" placeholder="أدخل مفتاح API Key" class="form-input">
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                            <button onclick="fetchSmmServices()" id="btn-fetch-smm" class="btn-primary" style="width: 100%;">جلب الخدمات الآن 🔄</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="smm-results-container" class="card hidden">
+                    <div class="section-header">
+                        <h4>الخدمات المتاحة (<span id="smm-count">0</span>)</h4>
+                        <input type="text" id="smm-search" oninput="filterSmmServices()" placeholder="ابحث باسم الخدمة أو رقمها..." class="form-input" style="max-width: 280px;">
+                    </div>
+                    <div class="table-wrap" style="max-height: 450px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>اسم الخدمة</th>
+                                    <th>سعر المزود (لكل 1000)</th>
+                                    <th>الحد الأدنى</th>
+                                    <th>إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="smm-services-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-settings" class="card hidden">
+                <h3 style="color: #818cf8; margin-bottom: 20px;">⚙️ التحكم الكامل في نصوص وإعدادات الموقع</h3>
+                <form onsubmit="saveSiteSettings(event)" class="grid-2">
+                    <div class="form-group">
+                        <label>اسم المتجر</label>
+                        <input type="text" id="set-storeName" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>الشارة العلوية (Badge)</label>
+                        <input type="text" id="set-heroBadge" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان الرئيسي</label>
+                        <input type="text" id="set-heroTitle" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان الملون</label>
+                        <input type="text" id="set-heroHighlight" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف تحت العنوان</label>
+                        <input type="text" id="set-heroSubtitle" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>أرقام الدفع (فودافون كاش / انستاباي)</label>
+                        <input type="text" id="set-paymentNumbers" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>نص الفوتر أسفل الموقع</label>
+                        <input type="text" id="set-footerText" class="form-input">
+                    </div>
+                    <div style="grid-column: 1/-1;">
+                        <button type="submit" class="btn-primary">حفظ كافة إعدادات الموقع 💾</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="tab-chats" class="hidden">
+                <div class="chat-layout">
+                    <div class="card" id="admin-tickets-list"></div>
+                    <div class="card">
+                        <div id="admin-chat-messages" class="chat-box">
+                            <p style="color: #64748b; text-align: center; margin-top: 120px;">اختر تذكرة من القائمة للرد...</p>
+                        </div>
+                        <form onsubmit="sendAdminChat(event)" style="display: flex; gap: 8px;">
+                            <input type="hidden" id="active-chat-order-id">
+                            <input type="text" id="admin-chat-input" placeholder="اكتب رد الأدمن..." class="form-input">
+                            <button type="submit" class="btn-indigo">إرسال</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal إضافة منصة جديدة -->
+    <div id="platform-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color: #818cf8; margin-bottom: 15px;">إضافة منصة أو لعبة جديدة</h3>
+            <form onsubmit="saveNewPlatform(event)">
+                <div class="form-group">
+                    <label>القسم التابع له</label>
+                    <select id="new-p-category" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                    <label>اسم المنصة أو اللعبة</label>
+                    <input type="text" id="new-p-name" required placeholder="مثال: تيك توك أو ببجي" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>الأيقونة (إيموجي)</label>
+                    <input type="text" id="new-p-icon" required placeholder="مثال: 🎮" class="form-input">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn-indigo" style="flex: 1;">حفظ</button>
+                    <button type="button" onclick="closeAddPlatformModal()" class="btn-secondary" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal تعديل خدمة بالكامل (الاسم، السعر، الكمية، والوصف) -->
+    <div id="edit-service-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color: #818cf8; margin-bottom: 15px;">تعديل تفاصيل الخدمة</h3>
+            <form onsubmit="saveEditedService(event)">
+                <input type="hidden" id="edit-p-index">
+                <input type="hidden" id="edit-s-index">
+                <div class="form-group">
+                    <label>اسم الخدمة</label>
+                    <input type="text" id="edit-s-name" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>السعر (ج.م)</label>
+                    <input type="number" step="0.01" id="edit-s-price" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>هذا السعر لكل كام وحدة؟ (مثال: 1000 أو 1)</label>
+                    <input type="number" id="edit-s-qty" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>الحد الأدنى للطلب</label>
+                    <input type="number" id="edit-s-min" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>وصف الخدمة (يظهر للعميل تحت اسم الخدمة)</label>
+                    <textarea id="edit-s-desc" rows="3" placeholder="مثال: ضمان 30 يوم - سرعة البدء خلال ساعة..." class="form-input" style="resize: vertical;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">حفظ التعديلات ✅</button>
+                    <button type="button" onclick="document.getElementById('edit-service-modal').classList.add('hidden')" class="btn-secondary" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal استيراد خدمة API -->
+    <div id="import-smm-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color: #22d3ee; margin-bottom: 15px;">استيراد الخدمة وتحديد سعرك</h3>
+            <form onsubmit="confirmImportSmmService(event)">
+                <input type="hidden" id="imp-api-id">
+                <div class="form-group">
+                    <label>اختر المنصة في متجرك</label>
+                    <select id="imp-platform-id" required class="form-input"></select>
+                </div>
+                <div class="form-group">
+                    <label>اسم الخدمة للعميل</label>
+                    <input type="text" id="imp-name" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>السعر لكل 1000 في متجرك (ج.م)</label>
+                    <input type="number" step="0.01" id="imp-price" required class="form-input">
+                    <p id="imp-provider-hint" style="font-size: 11px; color: #94a3b8; margin-top: 4px;"></p>
+                </div>
+                <div class="form-group">
+                    <label>الحد الأدنى للطلب</label>
+                    <input type="number" id="imp-min" required class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>وصف الخدمة</label>
+                    <textarea id="imp-desc" rows="2" placeholder="وصف الخدمة..." class="form-input" style="resize: vertical;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">إضافة للمتجر ✅</button>
+                    <button type="button" onclick="document.getElementById('import-smm-modal').classList.add('hidden')" class="btn-secondary" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let adminDb = null;
+        let token = sessionStorage.getItem('sk_admin_token');
+        let fetchedSmmList = [];
+
+        if (token) loadAdminData();
+
+        async function adminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-pass').value;
+            const res = await fetch('/api/admin/login', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                sessionStorage.setItem('sk_admin_token', data.token);
+                token = data.token;
+                loadAdminData();
+            } else { alert(data.message); }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('sk_admin_token');
+            location.reload();
+        }
+
+        async function loadAdminData() {
+            const res = await fetch('/api/admin/full-data', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.status === 403) { sessionStorage.removeItem('sk_admin_token'); return; }
+            const data = await res.json();
+            if (data.success) {
+                adminDb = data.db;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                populateSettingsForm();
+                renderAdminOrders();
+                renderAdminCategories();
+                renderAdminPlatforms();
+                renderAdminTickets();
+            }
+        }
+
+        async function saveDatabaseChanges() {
+            await fetch('/api/admin/update-db', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({ db: adminDb })
+            });
+        }
+
+        function switchTab(tab) {
+            ['orders', 'categories', 'platforms', 'smm', 'settings', 'chats'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('tab-btn-' + t).classList.remove('active');
+            });
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            document.getElementById('tab-btn-' + tab).classList.add('active');
+        }
+
+        function renderAdminOrders() {
+            const tbody = document.getElementById('admin-orders-tbody');
+            tbody.innerHTML = '';
+            adminDb.orders.forEach(o => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#818cf8; font-weight:bold;">#${o.id}</td>
+                    <td>${o.customerName}<br><small style="color:#94a3b8;">📱 ${o.paymentPhone}</small></td>
+                    <td>${o.platformName} - ${o.serviceName}<br><small style="color:#94a3b8;">🔗 ${o.target}</small></td>
+                    <td>${o.quantity}<br><b style="color:#22d3ee;">${o.totalPrice} ج.م</b></td>
+                    <td>${o.receiptImage ? `<a href="${o.receiptImage}" target="_blank" style="color:#818cf8;">عرض الإيصال</a>` : 'لا يوجد'}</td>
+                    <td>
+                        <select onchange="updateOrderStatus(${o.id}, this.value)" class="form-input" style="padding:6px; font-size:12px;">
+                            <option ${o.status === 'قيد المراجعة' ? 'selected' : ''}>قيد المراجعة</option>
+                            <option ${o.status === 'جاري التنفيذ' ? 'selected' : ''}>جاري التنفيذ</option>
+                            <option ${o.status === 'مكتمل' ? 'selected' : ''}>مكتمل</option>
+                            <option ${o.status === 'مرفوض' ? 'selected' : ''}>مرفوض</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function updateOrderStatus(orderId, newStatus) {
+            const order = adminDb.orders.find(o => o.id === orderId);
+            if (order) { order.status = newStatus; await saveDatabaseChanges(); }
+        }
+
+        function renderAdminCategories() {
+            const container = document.getElementById('admin-categories-list');
+            container.innerHTML = '';
+            adminDb.categories.forEach((cat, idx) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.alignItems = 'center';
+                div.innerHTML = `
+                    <div><h4><i class="${cat.icon}" style="color:#818cf8; margin-left:8px;"></i>${cat.name}</h4><small style="color:#64748b;">${cat.id}</small></div>
+                    <button onclick="deleteCategory(${idx})" class="btn-danger">حذف</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function addNewCategory() {
+            const name = prompt('اسم القسم الجديد (مثال: اشتراكات رقمية):');
+            if (!name) return;
+            const icon = prompt('أيقونة FontAwesome (اختياري):', 'fa-solid fa-star');
+            adminDb.categories.push({ id: 'cat_' + Date.now(), name, icon: icon || 'fa-solid fa-layer-group' });
+            await saveDatabaseChanges();
+            renderAdminCategories();
+        }
+
+        async function deleteCategory(idx) {
+            if (confirm('حذف هذا القسم؟')) { adminDb.categories.splice(idx, 1); await saveDatabaseChanges(); renderAdminCategories(); }
+        }
+
+        function renderAdminPlatforms() {
+            const container = document.getElementById('admin-platforms-list');
+            container.innerHTML = '';
+            adminDb.platforms.forEach((p, pIndex) => {
+                const catObj = adminDb.categories.find(c => c.id === p.categoryId);
+                const catName = catObj ? catObj.name : p.categoryId;
+                let servicesHtml = '';
+                p.services.forEach((s, sIndex) => {
+                    const baseQty = s.pricePerQty || 1;
+                    const priceText = baseQty > 1 ? `${s.pricePerUnit} ج.م لكل ${baseQty}` : `${s.pricePerUnit} ج.م`;
+                    servicesHtml += `
+                        <div class="service-row">
+                            <div style="flex:1;">
+                                <strong>${s.name}</strong> — <b style="color:#22d3ee;">${priceText}</b> (أقل كمية: ${s.minQty})
+                                ${s.description ? `<p style="font-size:12px; color:#94a3b8; margin-top:4px;">📝 ${s.description}</p>` : ''}
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button onclick="openEditServiceModal(${pIndex}, ${sIndex})" class="btn-warning">تعديل بالكامل</button>
+                                <button onclick="deleteService(${pIndex}, ${sIndex})" class="btn-danger">حذف</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="section-header" style="margin-bottom:10px;">
+                        <h4>${p.icon} ${p.name} <small style="background:#1e293b; padding:3px 8px; border-radius:8px; color:#818cf8; margin-right:8px;">${catName}</small></h4>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="openAddServiceModal(${pIndex})" class="btn-indigo">+ إضافة خدمة</button>
+                            <button onclick="deletePlatform(${pIndex})" class="btn-danger">حذف المنصة</button>
+                        </div>
+                    </div>
+                    <div>${servicesHtml || '<p style="color:#64748b; font-size:12px;">لا توجد خدمات مضافة.</p>'}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openAddPlatformModal() {
+            document.getElementById('new-p-category').innerHTML = adminDb.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            document.getElementById('platform-modal').classList.remove('hidden');
+        }
+        function closeAddPlatformModal() { document.getElementById('platform-modal').classList.add('hidden'); }
+
+        async function saveNewPlatform(e) {
+            e.preventDefault();
+            adminDb.platforms.push({
+                id: Date.now(),
+                categoryId: document.getElementById('new-p-category').value,
+                name: document.getElementById('new-p-name').value,
+                icon: document.getElementById('new-p-icon').value,
+                services: []
+            });
+            await saveDatabaseChanges();
+            closeAddPlatformModal();
+            renderAdminPlatforms();
+        }
+
+        async function deletePlatform(pIndex) {
+            if (confirm('حذف المنصة؟')) { adminDb.platforms.splice(pIndex, 1); await saveDatabaseChanges(); renderAdminPlatforms(); }
+        }
+
+        async function openAddServiceModal(pIndex) {
+            const name = prompt('اسم الخدمة (مثال: متابعين تيك توك):');
+            if (!name) return;
+            const price = prompt('السعر بالجنيه (مثال: 100):');
+            if (!price) return;
+            const pricePerQty = prompt('هذا السعر لكل كام وحدة؟ (اكتب 1000 أو 1):', '1000');
+            const minQty = prompt('الحد الأدنى للطلب:', pricePerQty || '100');
+            const description = prompt('وصف الخدمة (اختياري، يظهر للعميل):', '');
+
+            adminDb.platforms[pIndex].services.push({
+                id: Date.now(),
+                name,
+                pricePerUnit: Number(price),
+                pricePerQty: Number(pricePerQty || 1),
+                minQty: Number(minQty || 1),
+                description: description || ''
+            });
+            await saveDatabaseChanges();
+            renderAdminPlatforms();
+        }
+
+        function openEditServiceModal(pIndex, sIndex) {
+            const s = adminDb.platforms[pIndex].services[sIndex];
+            document.getElementById('edit-p-index').value = pIndex;
+            document.getElementById('edit-s-index').value = sIndex;
+            document.getElementById('edit-s-name').value = s.name;
+            document.getElementById('edit-s-price').value = s.pricePerUnit;
+            document.getElementById('edit-s-qty').value = s.pricePerQty || 1;
+            document.getElementById('edit-s-min').value = s.minQty;
+            document.getElementById('edit-s-desc').value = s.description || '';
+            document.getElementById('edit-service-modal').classList.remove('hidden');
+        }
+
+        async function saveEditedService(e) {
+            e.preventDefault();
+            const pIndex = Number(document.getElementById('edit-p-index').value);
+            const sIndex = Number(document.getElementById('edit-s-index').value);
+            const s = adminDb.platforms[pIndex].services[sIndex];
+
+            s.name = document.getElementById('edit-s-name').value;
+            s.pricePerUnit = Number(document.getElementById('edit-s-price').value);
+            s.pricePerQty = Number(document.getElementById('edit-s-qty').value);
+            s.minQty = Number(document.getElementById('edit-s-min').value);
+            s.description = document.getElementById('edit-s-desc').value;
+
+            await saveDatabaseChanges();
+            document.getElementById('edit-service-modal').classList.add('hidden');
+            renderAdminPlatforms();
+            alert('تم تحديث الخدمة بنجاح! ✅');
+        }
+
+        async function deleteService(pIndex, sIndex) {
+            if (confirm('حذف الخدمة؟')) { adminDb.platforms[pIndex].services.splice(sIndex, 1); await saveDatabaseChanges(); renderAdminPlatforms(); }
+        }
+
+        async function fetchSmmServices() {
+            const apiUrl = document.getElementById('smm-api-url').value.trim();
+            const apiKey = document.getElementById('smm-api-key').value.trim();
+            if (!apiUrl || !apiKey) return alert('أدخل رابط API ومفتاح Key!');
+            const btn = document.getElementById('btn-fetch-smm');
+            btn.innerText = 'جاري الجلب...';
+            adminDb.settings.smmApiUrl = apiUrl;
+            adminDb.settings.smmApiKey = apiKey;
+            await saveDatabaseChanges();
+            try {
+                const res = await fetch('/api/admin/fetch-smm-services', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                    body: JSON.stringify({ apiUrl, apiKey })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    fetchedSmmList = data.services;
+                    document.getElementById('smm-results-container').classList.remove('hidden');
+                    renderSmmTable(fetchedSmmList);
+                } else { alert(data.message); }
+            } catch (e) { alert('خطأ في الاتصال بالمزود'); }
+            finally { btn.innerText = 'جلب الخدمات الآن 🔄'; }
+        }
+
+        function renderSmmTable(list) {
+            document.getElementById('smm-count').innerText = list.length;
+            const tbody = document.getElementById('smm-services-tbody');
+            tbody.innerHTML = '';
+            list.slice(0, 150).forEach(srv => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#818cf8; font-weight:bold;">${srv.service}</td>
+                    <td>${srv.name}</td>
+                    <td style="color:#22d3ee;">${srv.rate}</td>
+                    <td>${srv.min}</td>
+                    <td><button onclick='openImportModal(${JSON.stringify(srv).replace(/'/g, "&#39;")})' class="btn-indigo">إضافة وتعديل</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterSmmServices() {
+            const q = document.getElementById('smm-search').value.toLowerCase();
+            renderSmmTable(fetchedSmmList.filter(s => String(s.service).includes(q) || (s.name && s.name.toLowerCase().includes(q))));
+        }
+
+        function openImportModal(srv) {
+            if (adminDb.platforms.length === 0) return alert('أضف منصة أولاً في تبويب المنصات!');
+            document.getElementById('imp-platform-id').innerHTML = adminDb.platforms.map(p => `<option value="${p.id}">${p.icon} ${p.name}</option>`).join('');
+            document.getElementById('imp-api-id').value = srv.service;
+            document.getElementById('imp-name').value = srv.name;
+            document.getElementById('imp-price').value = Number(srv.rate);
+            document.getElementById('imp-provider-hint').innerText = `سعر المزود لكل 1000: ${srv.rate}`;
+            document.getElementById('imp-min').value = srv.min || 100;
+            document.getElementById('imp-desc').value = srv.category ? `فئة المزود: ${srv.category}` : '';
+            document.getElementById('import-smm-modal').classList.remove('hidden');
+        }
+
+        async function confirmImportSmmService(e) {
+            e.preventDefault();
+            const p = adminDb.platforms.find(x => x.id === Number(document.getElementById('imp-platform-id').value));
+            if (!p) return;
+            p.services.push({
+                id: Date.now(),
+                name: document.getElementById('imp-name').value,
+                pricePerUnit: Number(document.getElementById('imp-price').value),
+                pricePerQty: 1000,
+                minQty: Number(document.getElementById('imp-min').value),
+                description: document.getElementById('imp-desc').value,
+                apiServiceId: document.getElementById('imp-api-id').value
+            });
+            await saveDatabaseChanges();
+            document.getElementById('import-smm-modal').classList.add('hidden');
+            renderAdminPlatforms();
+            alert('تمت الإضافة بنجاح!');
+        }
+
+        function populateSettingsForm() {
+            const s = adminDb.settings || {};
+            document.getElementById('set-storeName').value = s.storeName || '';
+            document.getElementById('set-heroBadge').value = s.heroBadge || '';
+            document.getElementById('set-heroTitle').value = s.heroTitle || '';
+            document.getElementById('set-heroHighlight').value = s.heroHighlight || '';
+            document.getElementById('set-heroSubtitle').value = s.heroSubtitle || '';
+            document.getElementById('set-paymentNumbers').value = s.paymentNumbers || '';
+            document.getElementById('set-footerText').value = s.footerText || '';
+            document.getElementById('smm-api-url').value = s.smmApiUrl || 'https://smmsharks.com/api/v2';
+            document.getElementById('smm-api-key').value = s.smmApiKey || '';
+        }
+
+        async function saveSiteSettings(e) {
+            e.preventDefault();
+            adminDb.settings.storeName = document.getElementById('set-storeName').value;
+            adminDb.settings.heroBadge = document.getElementById('set-heroBadge').value;
+            adminDb.settings.heroTitle = document.getElementById('set-heroTitle').value;
+            adminDb.settings.heroHighlight = document.getElementById('set-heroHighlight').value;
+            adminDb.settings.heroSubtitle = document.getElementById('set-heroSubtitle').value;
+            adminDb.settings.paymentNumbers = document.getElementById('set-paymentNumbers').value;
+            adminDb.settings.footerText = document.getElementById('set-footerText').value;
+            await saveDatabaseChanges();
+            alert('تم حفظ إعدادات الموقع بنجاح!');
+        }
+
+        function renderAdminTickets() {
+            const list = document.getElementById('admin-tickets-list');
+            list.innerHTML = '';
+            adminDb.tickets.forEach(t => {
+                const item = document.createElement('div');
+                item.style.cssText = 'background:#020617; padding:12px; border-radius:12px; border:1px solid #1e293b; margin-bottom:10px; cursor:pointer;';
+                item.onclick = () => loadAdminChat(t.orderId);
+                item.innerHTML = `<b style="color:#818cf8;">طلب #${t.orderId}</b><br><small>${t.customerName} (${t.messages.length} رسالة)</small>`;
+                list.appendChild(item);
+            });
+        }
+
+        async function loadAdminChat(orderId) {
+            document.getElementById('active-chat-order-id').value = orderId;
+            const res = await fetch(`/api/orders/${orderId}`);
+            const data = await res.json();
+            const box = document.getElementById('admin-chat-messages');
+            box.innerHTML = '';
+            if (data.success) {
+                data.ticket.messages.forEach(m => {
+                    box.innerHTML += `<div style="margin-bottom:8px; padding:8px 12px; border-radius:10px; background:#0f172a;"><b style="color:#818cf8;">${m.sender}:</b> ${m.text}</div>`;
+                });
+            }
+        }
+
+        async function sendAdminChat(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('active-chat-order-id').value;
+            const text = document.getElementById('admin-chat-input').value;
+            if (!orderId || !text) return;
+            await fetch('/api/tickets', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId, sender: 'admin', text })
+            });
+            document.getElementById('admin-chat-input').value = '';
+            loadAdminChat(orderId);
+        }
+    </script>
+</body>
+</html>
