@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">SK STORE - متجر الخدمات الرقمية وشحن الألعاب</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; font-family: 'Cairo', sans-serif; }
+        body { background-color: #030712; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        header { position: sticky; top: 0; z-index: 50; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { background: #4f46e5; color: white; padding: 10px 12px; border-radius: 14px; font-size: 18px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4); }
+        .logo-text { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #818cf8, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 20px; list-style: none; font-size: 14px; font-weight: 600; }
+        .nav-links a { color: #94a3b8; text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: #818cf8; }
+        .admin-btn { background: #1e293b; color: #818cf8; border: 1px solid #334155; padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; text-decoration: none; transition: 0.3s; }
+        .admin-btn:hover { background: #334155; }
+
+        .hero { position: relative; padding: 60px 20px; text-align: center; background: radial-gradient(circle at center, rgba(79, 70, 229, 0.15) 0%, rgba(3, 7, 18, 1) 70%); }
+        .hero-badge { background: rgba(79, 70, 229, 0.1); color: #818cf8; border: 1px solid rgba(79, 70, 229, 0.2); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 20px; }
+        .hero h1 { font-size: 32px; font-weight: 900; line-height: 1.4; max-width: 800px; margin: 0 auto 20px; }
+        .hero p { color: #94a3b8; font-size: 16px; max-width: 600px; margin: 0 auto 30px; }
+        .hero-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn-primary { background: linear-gradient(135deg, #4f46e5, #06b6d4); color: white; padding: 14px 28px; border-radius: 16px; font-weight: bold; text-decoration: none; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3); transition: 0.3s; border: none; cursor: pointer; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-secondary { background: #0f172a; color: #e2e8f0; border: 1px solid #1e293b; padding: 14px 28px; border-radius: 16px; font-weight: bold; text-decoration: none; transition: 0.3s; }
+        .btn-secondary:hover { background: #1e293b; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; width: 100%; }
+        .section-title { text-align: center; margin-bottom: 30px; }
+        .section-title h2 { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+        .section-title p { color: #94a3b8; font-size: 14px; }
+
+        .categories-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
+        .cat-btn { background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 14px 24px; border-radius: 16px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .cat-btn.active { background: #4f46e5; color: white; border-color: #6366f1; box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4); }
+
+        .platforms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .platform-card { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; border-radius: 20px; padding: 25px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .platform-card:hover { border-color: #4f46e5; transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .platform-card .icon { font-size: 40px; margin-bottom: 12px; }
+        .platform-card h4 { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .platform-card p { font-size: 12px; color: #64748b; }
+
+        .services-box { background: rgba(15, 23, 42, 0.95); border: 1px solid #1e293b; border-radius: 24px; padding: 30px; margin-bottom: 40px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .services-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
+        .services-header h3 { font-size: 20px; color: #818cf8; display: flex; align-items: center; gap: 10px; }
+        .close-services { background: #1e293b; color: #94a3b8; border: none; padding: 6px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .service-item { background: #020617; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+        .service-info h5 { font-size: 15px; font-weight: bold; margin-bottom: 6px; }
+        .service-info p { font-size: 12px; color: #94a3b8; }
+        .service-info span { color: #22d3ee; font-weight: bold; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #0f172a; border: 1px solid #1e293b; width: 100%; max-width: 500px; border-radius: 24px; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-close { position: absolute; top: 20px; left: 20px; background: none; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
+        .form-input { width: 100%; background: #020617; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 15px; color: white; font-size: 14px; }
+        .form-input:focus { outline: none; border-color: #6366f1; }
+        .total-box { background: #020617; border: 1px solid #1e293b; border-radius: 14px; padding: 15px; margin: 15px 0; }
+        .total-row { display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; margin-bottom: 8px; }
+        .total-row span:last-child { color: #22d3ee; }
+        .payment-note { font-size: 11px; color: #94a3b8; border-top: 1px solid #1e293b; padding-top: 8px; }
+        .payment-note b { color: #818cf8; user-select: all; }
+
+        .table-container { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; border-radius: 20px; padding: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; }
+        th { color: #64748b; border-bottom: 1px solid #1e293b; padding-bottom: 12px; font-weight: 600; }
+        td { padding: 14px 10px; border-bottom: 1px solid rgba(30, 41, 59, 0.5); }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid; display: inline-block; }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: #34d399; border-color: rgba(16, 185, 129, 0.2); }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; border-radius: 20px; padding: 25px; }
+        .card h3 { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #818cf8; }
+        .chat-box { background: #020617; border: 1px solid #1e293b; height: 160px; border-radius: 12px; padding: 12px; overflow-y: auto; margin-bottom: 12px; font-size: 13px; }
+        
+        footer { background: #0f172a; border-top: 1px solid #1e293b; padding: 20px; text-align: center; color: #64748b; font-size: 13px; margin-top: 40px; }
+
+        @media(max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo-box">
+                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+                <span id="nav-store-name" class="logo-text">SK STORE</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#services-section">الخدمات</a></li>
+                <li><a href="#radar-section">رادار الطلبات ⚡</a></li>
+                <li><a href="#track-section">تتبع الطلب</a></li>
+                <li><a href="#support-section">الدعم الفني</a></li>
+            </ul>
+            <a href="admin.html" class="admin-btn"><i class="fa-solid fa-shield-halved"></i> لوحة الأدمن</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <span id="hero-badge" class="hero-badge">🚀 المنصة الأولى والأضمن لخدمات السوشيال والشحن</span>
+        <h1>
+            <span id="hero-title">عزز حضورك وشحن ألعابك المفضلة</span><br>
+            <span id="hero-highlight" style="color: #22d3ee;">بكل أمان وسرعة</span>
+        </h1>
+        <p id="hero-subtitle">خدمات حقيقية، تنفيذ تلقائي، ضمان تعويض، ودعم فني متواصل 24/7.</p>
+        <div class="hero-buttons">
+            <a href="#services-section" class="btn-primary">اطلب خدمتك الآن</a>
+            <a href="#radar-section" class="btn-secondary">رادار الطلبات المباشر</a>
+        </div>
+    </section>
+
+    <div class="container" id="services-section">
+        <div class="section-title">
+            <h2>اختر القسم المناسب لك</h2>
+            <p>تصفح كافة الأقسام والمنصات المتاحة في المتجر</p>
+        </div>
+
+        <div id="categories-container" class="categories-grid"></div>
+        <div id="platforms-grid" class="platforms-grid"></div>
+
+        <div id="services-container" class="services-box" style="display: none;">
+            <div class="services-header">
+                <h3 id="selected-platform-title"></h3>
+                <button onclick="closeServices()" class="close-services">إغلاق ✕</button>
+            </div>
+            <div id="services-list" class="services-grid"></div>
+        </div>
+    </div>
+
+    <div id="order-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button onclick="closeOrderModal()" class="modal-close">✕</button>
+            <h3 style="color: #818cf8; margin-bottom: 5px; font-size: 20px;">إتمام الطلب والدفع</h3>
+            <p id="modal-service-info" style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;"></p>
+
+            <form id="order-form" onsubmit="submitOrder(event)">
+                <input type="hidden" id="form-platform">
+                <input type="hidden" id="form-service">
+                <input type="hidden" id="form-price-per-unit">
+                <input type="hidden" id="form-raw-total">
+
+                <div class="form-group">
+                    <label>اسمك الكريم</label>
+                    <input type="text" id="form-name" required placeholder="أدخل اسمك الكامل" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>رابط الحساب / الآيدي (ID)</label>
+                    <input type="text" id="form-target" required placeholder="أدخل الرابط أو الآيدي بدقة" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>الكمية المطلوبة</label>
+                    <input type="number" id="form-quantity" oninput="calculateTotal()" required class="form-input">
+                </div>
+                <div class="total-box">
+                    <div class="total-row">
+                        <span>السعر الإجمالي:</span>
+                        <span id="form-total-price">0 ج.م</span>
+                    </div>
+                    <div class="payment-note">
+                        💳 بيانات التحويل: <b id="modal-payment-info">01208549411</b>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف المحول منه</label>
+                    <input type="text" id="form-payment-phone" required placeholder="مثال: 01012345678" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>صورة إيصال التحويل (سكرين شوت)</label>
+                    <input type="file" id="form-receipt" accept="image/*" required class="form-input" style="padding: 8px;">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">تأكيد وإرسال الطلب 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="radar-section">
+        <div class="section-title">
+            <h2>رادار الطلبات المباشر ⚡</h2>
+            <p>تابع أحدث الطلبات لعملائنا بكل مصداقية وثقة</p>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>اسم العميل</th>
+                        <th>الخدمة</th>
+                        <th>الكمية</th>
+                        <th>الحالة</th>
+                        <th>التاريخ</th>
+                    </tr>
+                </thead>
+                <tbody id="radar-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container" id="track-section">
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔍 متابعة حالة طلبك</h3>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="number" id="track-input-id" placeholder="رقم الطلب (مثال: 1001)" class="form-input">
+                    <button onclick="trackOrder()" class="btn-primary" style="padding: 0 20px;">بحث</button>
+                </div>
+                <div id="track-result" style="display: none; background: #020617; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; font-size: 13px;"></div>
+            </div>
+
+            <div class="card" id="support-section">
+                <h3>💬 الدعم الفني والشات</h3>
+                <div style="margin-bottom: 12px;">
+                    <input type="number" id="chat-order-id" placeholder="أدخل رقم الطلب للمحادثة" class="form-input">
+                </div>
+                <div id="chat-box" class="chat-box">
+                    <p style="color: #64748b; text-align: center; margin-top: 50px;">أدخل رقم الطلب لعرض الرسائل...</p>
+                </div>
+                <form onsubmit="sendChatMessage(event)" style="display: flex; gap: 8px;">
+                    <input type="text" id="chat-message-input" placeholder="اكتب رسالتك..." class="form-input">
+                    <button type="submit" class="btn-primary" style="padding: 0 20px;">إرسال</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footer-text">جميع الحقوق محفوظة © 2026 - SK STORE للخدمات الرقمية وشحن الألعاب</p>
+    </footer>
+
+    <script>
+        let storeData = { settings: {}, categories: [], platforms: [], orders: [] };
+        let currentCategoryId = null;
+
+        async function fetchStoreData() {
+            const defaultFallback = {
+                categories: [
+                    { id: 'social', name: 'تزويد سوشيال ميديا', icon: 'fa-solid fa-users' },
+                    { id: 'gaming', name: 'شحن الألعاب', icon: 'fa-solid fa-gamepad' }
+                ],
+                platforms: [
+                    { id: 1, categoryId: 'social', name: 'تيك توك', icon: '🎵', services: [{ id: 101, name: 'متابعين تيك توك حقيقيين', pricePerUnit: 100, pricePerQty: 1000, minQty: 100, description: 'ضمان تعويض 30 يوم - سرعة البدء خلال ساعة' }] },
+                    { id: 2, categoryId: 'social', name: 'انستقرام', icon: '📸', services: [{ id: 201, name: 'متابعين انستقرام', pricePerUnit: 120, pricePerQty: 1000, minQty: 100, description: 'متابعين متفاعلين بجودة عالية' }] },
+                    { id: 7, categoryId: 'gaming', name: 'ببجي موبايل', icon: '🎮', services: [{ id: 701, name: 'شحن 60 شدة UC', pricePerUnit: 50, pricePerQty: 1, minQty: 1, description: 'شحن رسمي وآمن عن طريق الآيدي' }] },
+                    { id: 8, categoryId: 'gaming', name: 'فري فاير', icon: '🔥', services: [{ id: 801, name: 'شحن 100 جوهرة', pricePerUnit: 45, pricePerQty: 1, minQty: 1, description: 'شحن فوري بالآيدي' }] }
+                ],
+                orders: []
+            };
+
+            try {
+                const res = await fetch('/api/data');
+                const data = await res.json();
+                storeData = data;
+                if (!storeData.categories || storeData.categories.length === 0) storeData.categories = defaultFallback.categories;
+                if (!storeData.platforms || storeData.platforms.length === 0) storeData.platforms = defaultFallback.platforms;
+                storeData.platforms.forEach(p => { if (!p.categoryId && p.type) p.categoryId = p.type; });
+            } catch (e) {
+                storeData = defaultFallback;
+            }
+            applySettings();
+            renderCategories();
+            renderRadar();
+        }
+
+        function applySettings() {
+            const s = storeData.settings || {};
+            if (s.storeName) document.getElementById('nav-store-name').innerText = s.storeName;
+            if (s.heroBadge) document.getElementById('hero-badge').innerText = s.heroBadge;
+            if (s.heroTitle) document.getElementById('hero-title').innerText = s.heroTitle;
+            if (s.heroHighlight) document.getElementById('hero-highlight').innerText = s.heroHighlight;
+            if (s.heroSubtitle) document.getElementById('hero-subtitle').innerText = s.heroSubtitle;
+            if (s.paymentNumbers) document.getElementById('modal-payment-info').innerText = s.paymentNumbers;
+            if (s.footerText) document.getElementById('footer-text').innerText = s.footerText;
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            const cats = storeData.categories || [];
+            if (cats.length > 0 && !currentCategoryId) currentCategoryId = cats[0].id;
+
+            cats.forEach(cat => {
+                const isActive = cat.id === currentCategoryId;
+                const btn = document.createElement('button');
+                btn.className = `cat-btn ${isActive ? 'active' : ''}`;
+                btn.innerHTML = `<i class="${cat.icon || 'fa-solid fa-layer-group'}"></i> ${cat.name}`;
+                btn.onclick = () => { currentCategoryId = cat.id; renderCategories(); renderPlatforms(); closeServices(); };
+                container.appendChild(btn);
+            });
+            renderPlatforms();
+        }
+
+        function renderPlatforms() {
+            const grid = document.getElementById('platforms-grid');
+            grid.innerHTML = '';
+            const filtered = storeData.platforms.filter(p => p.categoryId === currentCategoryId);
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 20px;">لا توجد منصات في هذا القسم.</p>';
+                return;
+            }
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'platform-card';
+                card.onclick = () => selectPlatform(p);
+                card.innerHTML = `
+                    <div class="icon">${p.icon}</div>
+                    <h4>${p.name}</h4>
+                    <p>${p.services.length} خدمات متاحة</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectPlatform(platform) {
+            const box = document.getElementById('services-container');
+            box.style.display = 'block';
+            document.getElementById('selected-platform-title').innerHTML = `${platform.icon} خدمات ${platform.name}`;
+            const list = document.getElementById('services-list');
+            list.innerHTML = '';
+            platform.services.forEach(s => {
+                const baseQty = s.pricePerQty || 1;
+                const priceDisplay = baseQty > 1 ? `${s.pricePerUnit} جنيه لكل ${baseQty}` : `${s.pricePerUnit} جنيه`;
+                const descHtml = s.description ? `<p style="color:#94a3b8; font-size:12px; margin-top:4px;">${s.description}</p>` : '';
+
+                const item = document.createElement('div');
+                item.className = 'service-item';
+                item.innerHTML = `
+                    <div class="service-info" style="flex: 1;">
+                        <h5>${s.name}</h5>
+                        <p>السعر: <span>${priceDisplay}</span> | الحد الأدنى: ${s.minQty}</p>
+                        ${descHtml}
+                    </div>
+                    <button onclick="openModal('${platform.name}', '${s.name}', ${s.pricePerUnit}, ${baseQty}, ${s.minQty})" class="btn-primary" style="padding: 8px 16px; font-size: 13px;">اطلب</button>
+                `;
+                list.appendChild(item);
+            });
+            box.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeServices() { document.getElementById('services-container').style.display = 'none'; }
+
+        function openModal(platform, service, price, baseQty, min) {
+            document.getElementById('form-platform').value = platform;
+            document.getElementById('form-service').value = service;
+            document.getElementById('form-price-per-unit').value = price / baseQty;
+            
+            const priceLabel = baseQty > 1 ? `(${price} جنيه لكل ${baseQty})` : `(${price} جنيه)`;
+            document.getElementById('modal-service-info').innerText = `الخدمة: ${service} ${priceLabel} - ${platform}`;
+            
+            document.getElementById('form-quantity').value = min;
+            document.getElementById('form-quantity').min = min;
+            calculateTotal();
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function closeOrderModal() { document.getElementById('order-modal').style.display = 'none'; }
+
+        function calculateTotal() {
+            const qty = Number(document.getElementById('form-quantity').value) || 0;
+            const price = Number(document.getElementById('form-price-per-unit').value) || 0;
+            const total = Number((qty * price).toFixed(2));
+            document.getElementById('form-raw-total').value = total;
+            document.getElementById('form-total-price').innerText = total + ' ج.م';
+        }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('customerName', document.getElementById('form-name').value);
+            formData.append('platformName', document.getElementById('form-platform').value);
+            formData.append('serviceName', document.getElementById('form-service').value);
+            formData.append('quantity', document.getElementById('form-quantity').value);
+            formData.append('target', document.getElementById('form-target').value);
+            formData.append('totalPrice', document.getElementById('form-raw-total').value);
+            formData.append('paymentPhone', document.getElementById('form-payment-phone').value);
+            formData.append('receiptImage', document.getElementById('form-receipt').files[0]);
+
+            const res = await fetch('/api/orders', { method: 'POST', body: formData });
+            const result = await res.json();
+            if(result.success) {
+                alert(`تم الطلب بنجاح! رقم طلبك: ${result.orderId}`);
+                closeOrderModal();
+                fetchStoreData();
+            } else { alert('حدث خطأ'); }
+        }
+
+        function renderRadar() {
+            const tbody = document.getElementById('radar-table-body');
+            tbody.innerHTML = '';
+            storeData.orders.slice(0, 10).forEach(o => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color: #818cf8; font-weight: bold;">#${o.id}</td>
+                    <td>${o.customerName}</td>
+                    <td>${o.platformName} - ${o.serviceName}</td>
+                    <td>${o.quantity}</td>
+                    <td><span class="badge badge-success">${o.status}</span></td>
+                    <td style="color: #64748b;">${o.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function trackOrder() {
+            const id = document.getElementById('track-input-id').value;
+            if(!id) return alert('أدخل رقم الطلب!');
+            const res = await fetch(`/api/orders/${id}`);
+            const data = await res.json();
+            const div = document.getElementById('track-result');
+            div.style.display = 'block';
+            if(data.success) {
+                const o = data.order;
+                div.innerHTML = `<p style="color: #818cf8; font-weight: bold; margin-bottom: 5px;">طلب #${o.id} - ${o.status}</p><p>المبلغ: ${o.totalPrice} ج.م | الكمية: ${o.quantity}</p>`;
+            } else { div.innerHTML = `<p style="color: #f43f5e;">الطلب غير موجود</p>`; }
+        }
+
+        async function sendChatMessage(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('chat-order-id').value;
+            const text = document.getElementById('chat-message-input').value;
+            if(!orderId || !text) return;
+            await fetch('/api/tickets', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId, sender: 'customer', text })
+            });
+            document.getElementById('chat-message-input').value = '';
+            loadChatMessages(orderId);
+        }
+
+        async function loadChatMessages(orderId) {
+            const res = await fetch(`/api/orders/${orderId}`);
+            const data = await res.json();
+            const box = document.getElementById('chat-box');
+            box.innerHTML = '';
+            if(data.success && data.ticket.messages.length > 0) {
+                data.ticket.messages.forEach(m => {
+                    box.innerHTML += `<div style="margin-bottom: 8px; padding: 6px 10px; border-radius: 8px; background: #0f172a;"><b style="color: #818cf8;">${m.sender === 'customer' ? 'أنت' : 'الإدارة'}:</b> ${m.text}</div>`;
+                });
+                box.scrollTop = box.scrollHeight;
+            } else {
+                box.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 50px;">لا توجد رسائل سابقة.</p>';
+            }
+        }
+
+        document.getElementById('chat-order-id').addEventListener('blur', (e) => {
+            if(e.target.value) loadChatMessages(e.target.value);
+        });
+
+        window.onload = fetchStoreData;
+    </script>
+</body>
+</html>

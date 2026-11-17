@@ -1,0 +1,135 @@
+{
+  "settings": {
+    "storeName": "kevin store ",
+    "heroBadge": " المنصة الأولى والأضمن لخدمات السوشيال والشحن🎮🛡",
+    "heroTitle": "عزز حضورك واشحن ألعابك المفضلة",
+    "heroHighlight": "بكل أمان وسرعة",
+    "heroSubtitle": "خدمات حقيقية، تنفيذ تلقائي، ضمان تعويض، ودعم فني متواصل 24/7.",
+    "paymentNumbers": "فودافون كاش / أورنج كاش: 01208549411",
+    "footerText": "جميع الحقوق محفوظة © 2026- kivin STORE للخدمات الرقمية وشحن الألعاب",
+    "smmApiUrl": "https://smmsharks.com/api/v2",
+    "smmApiKey": ""
+  },
+  "categories": [
+    {
+      "id": "social",
+      "name": "تزويد سوشيال ميديا",
+      "icon": "fa-solid fa-users"
+    },
+    {
+      "id": "gaming",
+      "name": "شحن الألعاب",
+      "icon": "fa-solid fa-gamepad"
+    },
+    {
+      "id": "cat_1794937275312",
+      "name": "حسابات العاب",
+      "icon": "fa-solid fa-star"
+    }
+  ],
+  "platforms": [
+    {
+      "id": 1,
+      "categoryId": "social",
+      "name": "تيك توك",
+      "icon": "🎵",
+      "services": [
+        {
+          "id": 101,
+          "name": "متابعين تيك توك حقيقيين",
+          "pricePerUnit": 100,
+          "pricePerQty": 1000,
+          "minQty": 100
+        },
+        {
+          "id": 102,
+          "name": "لايكات تيك توك متفاعلة",
+          "pricePerUnit": 30,
+          "pricePerQty": 1000,
+          "minQty": 200
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "categoryId": "social",
+      "name": "انستقرام",
+      "icon": "📸",
+      "services": [
+        {
+          "id": 201,
+          "name": "متابعين انستقرام ضمان تعويض",
+          "pricePerUnit": 120,
+          "pricePerQty": 1000,
+          "minQty": 100
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "categoryId": "gaming",
+      "name": "ببجي موبايل",
+      "icon": "🎮",
+      "services": [
+        {
+          "id": 701,
+          "name": "شحن 60 شدة UC",
+          "pricePerUnit": 50,
+          "pricePerQty": 1,
+          "minQty": 1
+        },
+        {
+          "id": 702,
+          "name": "شحن 325 شدة UC",
+          "pricePerUnit": 250,
+          "pricePerQty": 1,
+          "minQty": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "categoryId": "gaming",
+      "name": "فري فاير",
+      "icon": "🔥",
+      "services": [
+        {
+          "id": 801,
+          "name": "شحن 100 جوهرة",
+          "pricePerUnit": 45,
+          "pricePerQty": 1,
+          "minQty": 1
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": 1001,
+      "customerName": "أحمد محمد",
+      "platformName": "تيك توك",
+      "serviceName": "متابعين تيك توك حقيقيين",
+      "quantity": 1000,
+      "target": "@ahmed_tik",
+      "totalPrice": 100,
+      "paymentPhone": "01012345678",
+      "receiptImage": "",
+      "status": "مرفوض",
+      "date": "2026-11-17"
+    }
+  ],
+  "tickets": [
+    {
+      "id": 501,
+      "orderId": 1001,
+      "customerName": "أحمد محمد",
+      "messages": [
+        {
+          "sender": "customer",
+          "text": "شكراً على السرعة!",
+          "time": "10:30 PM"
+        }
+      ]
+    }
+  ]
+}
